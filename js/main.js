@@ -20,8 +20,4 @@ let getPhotos = function() {
   }
   return photos;
 }
-let photos = getPhotos();
-for (let i  = 0; i < photos.length; i++) {
-  console.table(photos[i]);
-}
 
