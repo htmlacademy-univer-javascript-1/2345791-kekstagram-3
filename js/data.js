@@ -1,6 +1,6 @@
-import { getRandom, checkLength} from "./util.js";
+import { getRandom} from './util.js';
 const getPhotos = function() {
-  let photos = [];
+  const photos = [];
   for (let i  = 0; i <= 24; i++) {
     photos.push({
       id:i+1,
@@ -9,7 +9,7 @@ const getPhotos = function() {
       likes: getRandom(15, 200),
       comments: getRandom(0, 200)
     });
-  };
+  }
   return photos;
 };
 export {getPhotos};
