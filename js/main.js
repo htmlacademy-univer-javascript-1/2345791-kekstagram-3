@@ -1,2 +1,3 @@
 import { getPhotos } from './data.js';
-getPhotos();
+import { drawMinis } from './mini.js';
+drawMinis(getPhotos());
