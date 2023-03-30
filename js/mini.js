@@ -1,7 +1,8 @@
 const drawMinis = function(photos) {
   const template = document.querySelector('#picture').content;
   const picture = template.querySelector('.picture');
-  const pictures = template.querySelector('.pictures');
+  const pictures = document.querySelector('.pictures__container');
+  const fragment = document.createDocumentFragment();
   for (let i = 0; i < photos.length; i++) {
     const newPicture = picture.cloneNode(true);
     const image = newPicture.querySelector('.picture__img');
@@ -10,7 +11,8 @@ const drawMinis = function(photos) {
     image.src = photos[i].url;
     comments.textContent= photos[i].comments;
     likes.textContent= photos[i].likes;
-    pictures.createDocumentFragment(newPicture);
+    fragment.appendChild(newPicture);
   }
+  pictures.appendChild(fragment);
 };
 export {drawMinis};
