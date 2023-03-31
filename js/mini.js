@@ -1,7 +1,7 @@
 const drawMinis = function(photos) {
   const template = document.querySelector('#picture').content;
   const picture = template.querySelector('.picture');
-  const pictures = document.querySelector('.pictures__container');
+  const pictures = document.querySelector('.pictures');
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < photos.length; i++) {
     const newPicture = picture.cloneNode(true);
