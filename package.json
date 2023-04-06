@@ -26,6 +26,7 @@
     "npm": "8.x"
   },
   "dependencies": {
+    "nouislider": "^15.7.0",
     "pristinejs": "^1.1.0"
   }
 }
