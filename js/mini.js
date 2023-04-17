@@ -1,6 +1,7 @@
+import { getDataLink } from './constants.js';
 
 const drawMinis = function() {
-  fetch('https://27.javascript.pages.academy/kekstagram-simple/data').then((response)=> response.json()).then((photos)=> {
+  fetch(getDataLink).then((response)=> response.json()).then((photos)=> {
     const template = document.querySelector('#picture').content;
     const picture = template.querySelector('.picture');
     const pictures = document.querySelector('.pictures');

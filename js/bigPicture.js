@@ -17,18 +17,19 @@ function bigPicture() {
   noUiSlider.create(slider, {
     start:[1],
     range: {
-      'min': 0,
-      'max': 1
+      min: 0,
+      max: 1
     },
     step:0.1
   });
+  slider.classList.add('hidden');
 
   function updateSlider(min, max, step) {
     slider.noUiSlider.updateOptions({
       start: [max],
       range: {
-        'min': min,
-        'max': max
+        min,
+        max
       },
       step:step
     });
@@ -88,6 +89,7 @@ function bigPicture() {
     button.addEventListener('change', ()=> {
       previewPicture.classList.remove(`effects__preview--${currentEffect}`);
       previewPicture.classList.add(`effects__preview--${button.value}`);
+      slider.classList.remove('hidden');
       currentEffect=button.value;
       switch (currentEffect) {
         case 'chrome':
@@ -116,6 +118,7 @@ function bigPicture() {
           previewPicture.style.filter=`brightness(${effectValue.value})`;
           break;
         case 'none':
+          slider.classList.add('hidden');
           previewPicture.style.filter='';
           break;
       }

@@ -1,9 +1,16 @@
+import { uploadDataLink } from './constants.js';
+
+function EscapeKeyHandler(newMessage) {
+  newMessage.remove();
+  document.removeEventListener('keydown', EscapeKeyHandler);
+}
+
 function sendData(form, callBackfunc, openImgUpload) {
   const successTemplate = document.querySelector('#success').content;
   const errorTemplate = document.querySelector('#error').content;
   const errorMessage = errorTemplate.querySelector('.error');
   const successMessage = successTemplate.querySelector('.success');
-  fetch('https://27.javascript.pages.academy/kekstagram-simple',
+  fetch(uploadDataLink,
     {
       method: 'POST',
       body: new FormData(form)
@@ -12,11 +19,7 @@ function sendData(form, callBackfunc, openImgUpload) {
       const newMessage = successMessage.cloneNode(true);
       const successButton = newMessage.querySelector('.success__button');
       successButton.addEventListener('click', () => newMessage.remove());
-      // eslint-disable-next-line no-inner-declarations
-      function successEscapeKeyHandler() {
-        newMessage.remove();
-        document.removeEventListener('keydown', successEscapeKeyHandler);
-      }
+      const successEscapeKeyHandler = EscapeKeyHandler.bind(null, newMessage);
       document.addEventListener('keydown', successEscapeKeyHandler);
       document.body.appendChild(newMessage);
     } else {
@@ -26,11 +29,7 @@ function sendData(form, callBackfunc, openImgUpload) {
         newMessage.remove();
         openImgUpload();
       });
-      // eslint-disable-next-line no-inner-declarations
-      function errorEscapeKeyHandler() {
-        newMessage.remove();
-        document.removeEventListener('keydown', errorEscapeKeyHandler);
-      }
+      const errorEscapeKeyHandler = EscapeKeyHandler.bind(null, newMessage);
       document.addEventListener('keydown', errorEscapeKeyHandler);
       document.body.appendChild(newMessage);
     }
