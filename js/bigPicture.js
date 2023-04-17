@@ -1,4 +1,5 @@
 import { checkForm } from './form.js';
+import { sendData } from './sendData.js';
 function bigPicture() {
   const imgUpload = document.querySelector('.img-upload__overlay');
   const fileInput = document.querySelector('.img-upload__input');
@@ -7,16 +8,51 @@ function bigPicture() {
   const scaleDecreaseButton = document.querySelector('.scale__control--smaller');
   const scaleIncreaseButton = document.querySelector('.scale__control--bigger');
   const previewPicture = document.querySelector('.img-upload__preview img');
+  const dataForm = document.querySelector('.img-upload__form');
+  const slider = document.querySelector('.effect-level__slider');
+  const effectValue = document.querySelector('.effect-level__value');
+  const commentField = document.querySelector('.text__description');
+  let currentEffect='none';
 
+  noUiSlider.create(slider, {
+    start:[1],
+    range: {
+      min: 0,
+      max: 1
+    },
+    step:0.1
+  });
+  slider.classList.add('hidden');
 
-  function closeImgUpload() {
+  function updateSlider(min, max, step) {
+    slider.noUiSlider.updateOptions({
+      start: [max],
+      range: {
+        min,
+        max
+      },
+      step:step
+    });
+  }
+
+  function closeImgUpload(setDefault = true) {
     imgUpload.classList.add('hidden');
     document.removeEventListener('keydown', escapeKeyHandler);
+    if (setDefault) {
+      setScale(100);
+      previewPicture.classList.remove(`effects__preview--${currentEffect}`);
+      previewPicture.classList.add('effects__preview--');
+      currentEffect = 'none';
+      previewPicture.style.filter='';
+      updateSlider(0, 100, 1);
+      commentField.value='';
+      fileInput.value='';
+    }
   }
 
   function escapeKeyHandler(ev) {
     if (ev.key === 'Escape') {
-      closeImgUpload();
+      closeImgUpload(true);
     }
   }
 
@@ -26,8 +62,9 @@ function bigPicture() {
   }
 
   fileInput.addEventListener('change', openImgUpload);
+
   closeImgUploadButton.addEventListener('click', closeImgUpload);
-  checkForm();
+
   function setScale(scl) {
     scale.value=`${String(scl)}%`;
     previewPicture.style.transform=`scale(${scl/100})`;
@@ -46,34 +83,13 @@ function bigPicture() {
   scaleDecreaseButton.addEventListener('click', decreaseScale);
   scaleIncreaseButton.addEventListener('click', increaseScale);
 
-  const slider = document.querySelector('.effect-level__slider');
-  const effectValue = document.querySelector('.effect-level__value');
-  noUiSlider.create(slider, {
-    start:[1],
-    range: {
-      'min': 0,
-      'max': 1
-    },
-    step:0.1
-  });
-  function updateSlider(min, max, step) {
-    slider.noUiSlider.updateOptions({
-      start: [max],
-      range: {
-        'min': min,
-        'max': max
-      },
-      step:step
-    });
-  }
-
 
   const effectButtons = document.querySelectorAll('.effects__radio');
-  let currentEffect='none';
   function addEffectHandler(button) {
     button.addEventListener('change', ()=> {
       previewPicture.classList.remove(`effects__preview--${currentEffect}`);
       previewPicture.classList.add(`effects__preview--${button.value}`);
+      slider.classList.remove('hidden');
       currentEffect=button.value;
       switch (currentEffect) {
         case 'chrome':
@@ -102,6 +118,7 @@ function bigPicture() {
           previewPicture.style.filter=`brightness(${effectValue.value})`;
           break;
         case 'none':
+          slider.classList.add('hidden');
           previewPicture.style.filter='';
           break;
       }
@@ -130,6 +147,13 @@ function bigPicture() {
       case 'heat':
         previewPicture.style.filter=`brightness(${effectValue.value})`;
         break;
+    }
+  });
+
+  dataForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    if (checkForm(dataForm)) {
+      sendData(dataForm, closeImgUpload, openImgUpload);
     }
   });
 }
